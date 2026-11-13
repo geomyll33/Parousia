@@ -30,12 +30,12 @@
 ## Βήμα 2 — Λογαριασμός στο Render
 
 1. Ανοίξτε το render.com → **Get Started** → **GitHub** (σύνδεση με τον λογαριασμό σας στο GitHub).
-2. Δώστε στο Render πρόσβαση στο repository της εφαρμογής (π.χ. `parousies-qr`).
+2. Δώστε στο Render πρόσβαση στο repository της εφαρμογής `Parousia`.
 3. Προσθέστε κάρτα πληρωμής (Account → Billing).
 
 ## Βήμα 3 — Δημιουργία της υπηρεσίας
 
-1. Στο Render: **New → Blueprint** → επιλέξτε το repository της εφαρμογής (π.χ. `parousies-qr`).
+1. Στο Render: **New → Blueprint** → επιλέξτε το repository της εφαρμογής `Parousia`.
    - **Branch:** `main`.
 2. Το Render διαβάζει το αρχείο `render.yaml` και σας ζητά τις τιμές:
 

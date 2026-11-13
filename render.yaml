@@ -1,5 +1,5 @@
 # Ανάρτηση της εφαρμογής «Παρουσίες QR» στο Render (https://render.com).
-# Render → New → Blueprint → επιλέξτε αυτό το repository (parousies-qr).
+# Render → New → Blueprint → επιλέξτε αυτό το repository (Parousia).
 services:
   - type: web
     name: parousies
