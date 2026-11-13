@@ -1,0 +1,37 @@
+# Ανάρτηση της εφαρμογής «Παρουσίες QR» στο Render (https://render.com).
+# Render → New → Blueprint → επιλέξτε αυτό το repository (parousies-qr).
+services:
+  - type: web
+    name: parousies
+    runtime: node
+    region: frankfurt          # Ευρωπαϊκή Ένωση (GDPR)
+    plan: starter              # απαιτείται για μόνιμο δίσκο
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /healthz
+    autoDeploy: true
+    disk:
+      name: parousies-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: TRUST_PROXY
+        value: "1"
+      - key: ADMIN_PASSWORD      # ο κωδικός καθηγητή — τον ορίζετε εσείς στο Render
+        sync: false
+      - key: SMTP_HOST           # π.χ. smtp.gmail.com
+        sync: false
+      - key: SMTP_PORT
+        value: "465"
+      - key: SMTP_USER           # π.χ. το Gmail σας
+        sync: false
+      - key: SMTP_PASS           # Gmail: «Κωδικός εφαρμογής» 16 χαρακτήρων, όχι ο κανονικός κωδικός
+        sync: false
+      - key: SMTP_FROM           # π.χ. Παρουσίες <to-gmail-sas@gmail.com>
+        sync: false

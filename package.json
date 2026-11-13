@@ -1,0 +1,18 @@
+{
+  "name": "parousies-qr",
+  "version": "1.0.0",
+  "description": "Καταγραφή παρουσιών με QR που αλλάζει σε κάθε παρακολούθηση",
+  "main": "server.js",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "nodemailer": "10.2.1"
+  }
+}

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Παρουσίες QR</title>
+<meta name="theme-color" content="#0b5fa5">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Παρουσίες">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1><img src="icons/icon-192.png" alt="">Παρουσίες QR</h1>
+
+  <!-- Σύνδεση -->
+  <section id="login" class="card hidden">
+    <h2>Σύνδεση φοιτητή</h2>
+    <p class="muted">Γράψτε το email με το οποίο σας έχει δηλώσει ο καθηγητής. Η σύνδεση γίνεται μία φορά, για όλα τα μαθήματά σας, και η εφαρμογή «δένεται» με αυτή τη συσκευή.</p>
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" inputmode="email" required placeholder="onoma@example.com">
+      <div style="height:12px"></div>
+      <button class="big" type="submit" id="loginBtn">Σύνδεση</button>
+    </form>
+    <form id="codeForm" class="hidden">
+      <p>Στείλαμε έναν 6ψήφιο κωδικό στο <b id="codeEmail"></b>. Ελέγξτε και τα ανεπιθύμητα (spam).</p>
+      <label for="code">Κωδικός από το email</label>
+      <input id="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9 ]{6,7}" maxlength="7" required placeholder="123456" style="font-size:1.4rem;letter-spacing:.3em;text-align:center">
+      <div style="height:12px"></div>
+      <button class="big" type="submit">Επιβεβαίωση</button>
+      <div style="height:8px"></div>
+      <button class="secondary big" type="button" id="codeBack">← Άλλο email / νέος κωδικός</button>
+    </form>
+    <div id="loginMsg"></div>
+    <p class="muted" style="margin-bottom:0">🔒 Αποθηκεύονται μόνο το email, το όνομά σας και οι ώρες παρουσίας, αποκλειστικά για την τήρηση παρουσιών του μαθήματος.</p>
+  </section>
+
+  <!-- Κύρια -->
+  <section id="home" class="hidden">
+    <div class="card">
+      <div class="row">
+        <div class="grow"><strong id="who"></strong><div class="muted" id="whoEmail"></div></div>
+      </div>
+    </div>
+
+    <div id="result"></div>
+
+    <div class="card">
+      <div id="scanArea" class="hidden">
+        <div class="scanner"><video id="video" playsinline muted></video><div class="frame"></div></div>
+        <p class="muted" style="text-align:center">Στρέψτε την κάμερα στο QR της οθόνης του καθηγητή.</p>
+        <button class="secondary big" id="stopBtn" type="button">Ακύρωση</button>
+      </div>
+      <button class="big" id="scanBtn" type="button">📷 Σάρωση QR παρουσίας</button>
+    </div>
+
+    <div class="card">
+      <h2>Οι παρουσίες μου</h2>
+      <div id="history" class="muted">Φόρτωση…</div>
+    </div>
+
+    <div class="card" id="installCard">
+      <h2>Εγκατάσταση στο κινητό</h2>
+      <p class="muted" id="installHelp">
+        <b>Android (Chrome):</b> μενού ⋮ → «Εγκατάσταση εφαρμογής» ή «Προσθήκη στην αρχική οθόνη».<br>
+        <b>iPhone (Safari):</b> κουμπί Κοινοποίηση ⬆ → «Προσθήκη στην οθόνη Αφετηρίας».
+      </p>
+      <button id="installBtn" class="secondary hidden" type="button">⬇ Εγκατάσταση εφαρμογής</button>
+    </div>
+  </section>
+</main>
+
+<script src="vendor/jsQR.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

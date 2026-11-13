@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Παρουσίες — Καθηγητής</title>
+<meta name="theme-color" content="#0b5fa5">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="wide">
+  <h1><img src="icons/icon-192.png" alt="">Παρουσίες QR — Καθηγητής</h1>
+
+  <section id="login" class="card hidden" style="max-width:420px">
+    <h2>Σύνδεση καθηγητή</h2>
+    <form id="loginForm">
+      <label for="pw">Κωδικός</label>
+      <input id="pw" type="password" autocomplete="current-password" required>
+      <div style="height:12px"></div>
+      <button class="big" type="submit">Σύνδεση</button>
+    </form>
+    <div id="loginMsg"></div>
+  </section>
+
+  <section id="app" class="hidden">
+    <div class="card">
+      <div class="row">
+        <label for="courseSel" style="margin:0">Μάθημα</label>
+        <select id="courseSel" class="grow" style="font-weight:600"></select>
+        <button class="secondary small" id="newCourseBtn">＋ Νέο μάθημα</button>
+        <button class="secondary small" id="renameCourseBtn">✎ Μετονομασία</button>
+        <button class="danger small" id="deleteCourseBtn">🗑 Διαγραφή</button>
+        <a class="btn secondary small" href="/api/admin/backup.json" title="Όλα τα δεδομένα (όλα τα μαθήματα) σε ένα αρχείο">💾 Αντίγραφο</a>
+        <button class="secondary small" id="logoutBtn">Αποσύνδεση</button>
+      </div>
+      <div id="courseMsg"></div>
+    </div>
+
+    <div class="card hidden" id="noCourse">
+      <h2>Ξεκινήστε δημιουργώντας ένα μάθημα</h2>
+      <p class="muted">Κάθε μάθημα έχει δική του λίστα φοιτητών, δικές του παρακολουθήσεις και δικό του Excel.</p>
+      <div class="row">
+        <input class="grow" id="firstCourseName" placeholder="π.χ. Βάσεις Δεδομένων — Γ΄ εξάμηνο">
+        <button id="firstCourseBtn">＋ Δημιουργία μαθήματος</button>
+      </div>
+    </div>
+
+    <div id="courseArea">
+    <div class="tabs">
+      <button data-tab="live" class="active">▶ Παρακολούθηση</button>
+      <button data-tab="students">👥 Φοιτητές</button>
+      <button data-tab="history">📋 Ιστορικό</button>
+    </div>
+
+    <!-- Παρακολούθηση -->
+    <div data-pane="live">
+      <div class="card" id="startCard">
+        <h2>Νέα παρακολούθηση</h2>
+        <div class="row">
+          <input class="grow" id="title" placeholder="Τίτλος (π.χ. Διάλεξη 5)">
+          <button id="startBtn">▶ Έναρξη & εμφάνιση QR</button>
+        </div>
+        <p class="muted">Κάθε παρακολούθηση έχει δικό της QR, που επιπλέον αλλάζει κάθε λίγα δευτερόλεπτα — μια φωτογραφία του QR δεν μπορεί να χρησιμοποιηθεί αργότερα ή από το σπίτι.</p>
+        <div id="startMsg"></div>
+      </div>
+
+      <div id="liveCard" class="hidden">
+        <div class="qr-stage">
+          <div class="card">
+            <div class="row" style="margin-bottom:12px">
+              <h2 class="grow" id="liveTitle" style="margin:0"></h2>
+              <button class="secondary small" id="fsBtn">⛶ Πλήρης οθόνη</button>
+              <button class="danger small" id="closeBtn">■ Τέλος παρακολούθησης</button>
+            </div>
+            <div class="qr-box">
+              <canvas id="qr"></canvas>
+              <div class="bar"><i id="bar"></i></div>
+              <div class="qr-meta">Σαρώστε με την εφαρμογή «Παρουσίες QR» · <span id="liveUrl"></span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="qr-count"><span id="liveCount">0</span> <span class="muted" style="font-size:1rem">/ <span id="liveTotal">0</span> παρόντες</span></div>
+            <div class="list-scroll" id="liveList"></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>✋ Χειροκίνητη παρουσία</h2>
+          <p class="muted">Για φοιτητή χωρίς κινητό: βρείτε τον και πατήστε «Παρών».</p>
+          <input id="manualSearch" type="search" placeholder="Αναζήτηση ονόματος ή email…" autocomplete="off">
+          <div class="list-scroll" id="absentList" style="margin-top:8px;max-height:40vh"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Φοιτητές -->
+    <div data-pane="students" class="hidden">
+      <div class="card">
+        <h2>Λίστα φοιτητών του μαθήματος</h2>
+        <p class="muted">Ένας φοιτητής ανά γραμμή: email και, προαιρετικά, ονοματεπώνυμο. Π.χ. <code>Μαρία Παππά, maria@uni.gr</code> ή σκέτο <code>maria@uni.gr</code>. Μπορείτε να επικολλήσετε στήλες από Excel.</p>
+        <textarea id="studentsText" spellcheck="false"></textarea>
+        <div style="height:10px"></div>
+        <div class="row">
+          <button id="saveStudents">💾 Αποθήκευση λίστας</button>
+          <button class="secondary" id="inviteBtn">✉ Πρόσκληση με email (Bcc)</button>
+          <button class="secondary" id="copyLinkBtn">🔗 Αντιγραφή συνδέσμου εφαρμογής</button>
+        </div>
+        <div id="studentsMsg"></div>
+      </div>
+      <div class="card">
+        <h2>Κατάσταση</h2>
+        <div class="table-wrap" id="studentsTable"></div>
+      </div>
+    </div>
+
+    <!-- Ιστορικό -->
+    <div data-pane="history" class="hidden">
+      <div class="card">
+        <div class="row" style="margin-bottom:10px">
+          <h2 class="grow" style="margin:0">Παρακολουθήσεις μαθήματος</h2>
+          <a class="btn" id="exportCsv">⬇ Συνολικό Excel (CSV)</a>
+        </div>
+        <div class="table-wrap" id="sessionsTable"></div>
+      </div>
+      <div class="card hidden" id="detailCard">
+        <div class="row" style="margin-bottom:10px">
+          <h2 class="grow" style="margin:0" id="detailTitle"></h2>
+          <a class="btn secondary" id="detailCsv">⬇ CSV</a>
+          <button class="secondary" id="reopenBtn">↺ Επανάνοιγμα</button>
+          <button class="danger" id="deleteBtn">🗑 Διαγραφή</button>
+        </div>
+        <p class="muted">Πατήστε στην κατάσταση για χειροκίνητη διόρθωση (π.χ. φοιτητής χωρίς κινητό).</p>
+        <div class="table-wrap" id="detailTable"></div>
+      </div>
+    </div>
+    </div><!-- courseArea -->
+  </section>
+</main>
+
+<div class="fullscreen-qr hidden" id="fs">
+  <canvas id="qrFs"></canvas>
+  <div class="bar" style="max-width:min(92vw,82vh)"><i id="barFs"></i></div>
+  <div class="qr-meta" style="font-size:1.4rem"><b id="fsCount">0</b> παρόντες · πατήστε για έξοδο</div>
+</div>
+
+<script src="vendor/qrcode.js"></script>
+<script src="teacher.js"></script>
+</body>
+</html>
